@@ -10,6 +10,7 @@ AutoGen is a framework that enables the development of LLM applications via mult
 2. A code generation demo that can write and execute Python code
 3. A travel planning assistant that demonstrates non-coding use cases
 4. A romantic conversation simulation between two characters
+5. A simple flirtation example with just two characters interacting directly
 
 ## Prerequisites
 
@@ -70,6 +71,16 @@ docker-compose up romantic-chat
 
 This example simulates a flirtatious conversation between two characters (Emma and James) who just met at a literary event. It demonstrates how AutoGen can be used for creative content generation and character roleplay. The conversation is guided by a moderator agent, and you can observe or participate as desired.
 
+### Simple Flirtation Example
+
+For a direct flirtatious conversation between two characters without any moderator or observer:
+
+```bash
+docker-compose up simple-flirt
+```
+
+This stripped-down example shows Sophia and Alex flirting at a rooftop bar, with the conversation flowing naturally between just the two of them. It demonstrates how AutoGen can be used for simple character interactions and dialogue generation.
+
 ## Project Structure
 
 ```
@@ -78,7 +89,8 @@ autogen/
 │   ├── multi_agent_conversation.py     # Data analysis example with multiple agents
 │   ├── code_generation_example.py      # Example that generates and executes code
 │   ├── travel_planning_assistant.py    # Non-coding example for travel planning
-│   └── romantic_conversation.py        # Simulated conversation between two characters
+│   ├── romantic_conversation.py        # Simulated conversation with moderator/observer
+│   └── simple_flirt.py                 # Direct conversation between two characters
 ├── docker-compose.yml                  # Docker Compose configuration
 ├── Dockerfile                          # Docker image definition
 ├── requirements.txt                    # Python dependencies

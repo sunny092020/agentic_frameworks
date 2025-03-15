@@ -37,4 +37,16 @@ services:
     command: python /app/romantic_conversation.py
     tty: true        # Allocate a pseudo-TTY
     stdin_open: true # Keep stdin open
+    restart: "no"
+
+  simple-flirt:
+    build: .
+    container_name: autogen-simple-flirt
+    volumes:
+      - ./app:/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    command: python /app/simple_flirt.py
+    tty: true        # Allocate a pseudo-TTY
+    stdin_open: true # Keep stdin open
     restart: "no" 
