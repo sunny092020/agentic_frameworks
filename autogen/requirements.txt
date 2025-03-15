@@ -1,7 +1,8 @@
-pyautogen
-openai
-termcolor
-docker
-python-dotenv
-matplotlib
-flaml[automl]
+pyautogen==0.2.17
+openai>=1.3.0
+termcolor>=2.3.0
+docker>=6.1.3
+python-dotenv>=1.0.0
+matplotlib>=3.7.0
+flaml[automl]>=2.1.0
+pandas>=2.0.0
