@@ -92,32 +92,32 @@ if __name__ == "__main__":
     user_proxy.initiate_chat(
         assistant,
         message=f"""
-        Please help me with the following tasks. For each task, provide a complete, runnable Python code block that I can execute:
-        
-        TASK 1: Load the temperature data from this file: {data_path}
-        Use this exact code to start your solution:
-        ```python
-        import pandas as pd
-        import matplotlib.pyplot as plt
-        
-        # Load the dataset
-        df = pd.read_csv('{data_path}')
-        
-        # Display basic information
-        print(df.head())
-        print(df.info())
-        ```
-        
-        TASK 2: Calculate the average temperature for each location
-        Make sure to use the DataFrame created in Task 1.
-        
-        TASK 3: Create a visualization of temperature trends for each location over time
-        
-        TASK 4: Save the visualization as a PNG file
-        
-        Execute each code block separately and verify it works before proceeding to the next task.
-        After completing all tasks, please respond with 'TERMINATE'.
-        """
+Please help me with the following tasks. For each task, provide a complete, runnable Python code block that I can execute:
+
+TASK 1: Load the temperature data from this file: {data_path}
+Use this exact code to start your solution:
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv('{data_path}')
+
+# Display basic information
+print(df.head())
+print(df.info())
+```
+
+TASK 2: Calculate the average temperature for each location
+Make sure to use the DataFrame created in Task 1.
+
+TASK 3: Create a visualization of temperature trends for each location over time
+
+TASK 4: Save the visualization as a PNG file
+
+Execute each code block separately and verify it works before proceeding to the next task.
+After completing all tasks, please respond with 'TERMINATE'.
+"""
     )
     
     print("Code generation example completed.") 

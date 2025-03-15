@@ -109,63 +109,63 @@ def start_group_chat():
     user_proxy.initiate_chat(
         manager,
         message=f"""
-        I need to analyze a dataset of temperatures and create a visualization. 
-        
-        Please use the file 'temperature_data.csv' which is available at: {data_path}
-        The file contains temperature data for different cities over a week period.
-        
-        I'd like you to:
-        
-        1. First, load and explore the dataset using this exact code:
-           ```python
-           import pandas as pd
-           import matplotlib.pyplot as plt
-           
-           # Load the dataset
-           df = pd.read_csv('{data_path}')
-           
-           # Display the first few rows to understand the data
-           print(df.head())
-           
-           # Get basic information about the dataset
-           print(df.info())
-           print(df.describe())
-           ```
-           
-        2. Second, calculate average temperatures by location (not by city):
-           ```python
-           # Calculate average temperature by location
-           average_temps = df.groupby('location')['temperature'].mean()
-           print("Average Temperatures by Location:")
-           print(average_temps)
-           ```
-           
-        3. Finally, create a line chart visualization comparing the temperatures across locations:
-           ```python
-           # Create a line chart of temperatures by date for each location
-           plt.figure(figsize=(12, 6))
-           
-           for location in df['location'].unique():
-               location_data = df[df['location'] == location]
-               plt.plot(location_data['date'], location_data['temperature'], marker='o', label=location)
-           
-           plt.title('Temperature Trends by Location')
-           plt.xlabel('Date')
-           plt.ylabel('Temperature (°F)')
-           plt.legend()
-           plt.grid(True)
-           plt.xticks(rotation=45)
-           plt.tight_layout()
-           
-           # Save the visualization
-           plt.savefig('temperature_trends.png')
-           
-           # Show the plot
-           plt.show()
-           ```
-        
-        Please execute these code blocks in order, making sure each runs successfully before proceeding to the next.
-        """
+I need to analyze a dataset of temperatures and create a visualization. 
+
+Please use the file 'temperature_data.csv' which is available at: {data_path}
+The file contains temperature data for different cities over a week period.
+
+I'd like you to:
+
+1. First, load and explore the dataset using this exact code:
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv('{data_path}')
+
+# Display the first few rows to understand the data
+print(df.head())
+
+# Get basic information about the dataset
+print(df.info())
+print(df.describe())
+```
+
+2. Second, calculate average temperatures by location (not by city):
+```python
+# Calculate average temperature by location
+average_temps = df.groupby('location')['temperature'].mean()
+print("Average Temperatures by Location:")
+print(average_temps)
+```
+
+3. Finally, create a line chart visualization comparing the temperatures across locations:
+```python
+# Create a line chart of temperatures by date for each location
+plt.figure(figsize=(12, 6))
+
+for location in df['location'].unique():
+    location_data = df[df['location'] == location]
+    plt.plot(location_data['date'], location_data['temperature'], marker='o', label=location)
+
+plt.title('Temperature Trends by Location')
+plt.xlabel('Date')
+plt.ylabel('Temperature (°F)')
+plt.legend()
+plt.grid(True)
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Save the visualization
+plt.savefig('temperature_trends.png')
+
+# Show the plot
+plt.show()
+```
+
+Please execute these code blocks in order, making sure each runs successfully before proceeding to the next.
+"""
     )
 
 # Run the group chat
