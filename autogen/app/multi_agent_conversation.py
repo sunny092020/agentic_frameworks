@@ -48,6 +48,7 @@ programmer = AssistantAgent(
 user_proxy = UserProxyAgent(
     name="User",
     human_input_mode="NEVER",  # No human input for non-interactive examples
+    code_execution_config={},  # Use empty dict for default config instead of None
 )
 
 # Define a function to initialize a group chat
@@ -57,7 +58,10 @@ def start_group_chat():
         messages=[],
         max_round=10
     )
-    manager = GroupChatManager(groupchat=groupchat)
+    manager = GroupChatManager(
+        groupchat=groupchat,
+        llm_config=assistant_config  # Provide the LLM config to the manager
+    )
     
     # Start the conversation
     user_proxy.initiate_chat(

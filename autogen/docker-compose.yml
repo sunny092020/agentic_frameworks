@@ -11,4 +11,6 @@ services:
     command: python /app/multi_agent_conversation.py
     ports:
       - "8000:8000"  # In case we want to expose any web services
+    tty: true        # Allocate a pseudo-TTY
+    stdin_open: true # Keep stdin open
     restart: unless-stopped 
