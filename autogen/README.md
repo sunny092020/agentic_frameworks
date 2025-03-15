@@ -6,8 +6,9 @@ This example demonstrates how to use Microsoft's [AutoGen](https://github.com/mi
 
 AutoGen is a framework that enables the development of LLM applications via multiple agents that can converse with each other to solve tasks. This example includes:
 
-1. A multi-agent conversation demo
+1. A multi-agent conversation demo for data analysis
 2. A code generation demo that can write and execute Python code
+3. A travel planning assistant that demonstrates non-coding use cases
 
 ## Prerequisites
 
@@ -30,17 +31,17 @@ AutoGen is a framework that enables the development of LLM applications via mult
 
 ## Running the Examples
 
-### Using Docker Compose
+### Data Analysis Example
 
-To run the multi-agent conversation example:
+To run the multi-agent conversation example for data analysis:
 
 ```bash
-docker-compose up
+docker-compose up autogen
 ```
 
 This will build the Docker image and run the multi-agent conversation example.
 
-### Running the Code Generation Example
+### Code Generation Example
 
 To run the code generation example:
 
@@ -48,13 +49,24 @@ To run the code generation example:
 docker-compose run --rm autogen python /app/code_generation_example.py
 ```
 
+### Travel Planning Assistant
+
+To run the travel planning assistant example (which demonstrates a non-coding use case):
+
+```bash
+docker-compose up travel-planner
+```
+
+This example allows you to interact with a group of agents that help plan a vacation, including a travel coordinator, destination expert, budget advisor, and local cuisine expert.
+
 ## Project Structure
 
 ```
 autogen/
 ├── app/
-│   ├── multi_agent_conversation.py     # Main example with multiple agents
-│   └── code_generation_example.py      # Example that generates and executes code
+│   ├── multi_agent_conversation.py     # Data analysis example with multiple agents
+│   ├── code_generation_example.py      # Example that generates and executes code
+│   └── travel_planning_assistant.py    # Non-coding example for travel planning
 ├── docker-compose.yml                  # Docker Compose configuration
 ├── Dockerfile                          # Docker image definition
 ├── requirements.txt                    # Python dependencies
