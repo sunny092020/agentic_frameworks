@@ -1,6 +1,7 @@
 import os
-import autogen
 from dotenv import load_dotenv
+from autogen.agentchat.assistant_agent import AssistantAgent
+from autogen.agentchat.user_proxy_agent import UserProxyAgent
 
 # Load environment variables from .env file if present
 load_dotenv()
@@ -19,20 +20,19 @@ config_list = [
 ]
 
 llm_config = {
-    "seed": 42,  # for reproducibility
     "config_list": config_list,
     "temperature": 0.7,
 }
 
 # Create an AssistantAgent instance named "assistant"
-assistant = autogen.AssistantAgent(
+assistant = AssistantAgent(
     name="assistant",
     llm_config=llm_config,
     system_message="You are a helpful AI assistant with expertise in Python programming."
 )
 
 # Create a UserProxyAgent instance named "user_proxy" with code execution capabilities
-user_proxy = autogen.UserProxyAgent(
+user_proxy = UserProxyAgent(
     name="user_proxy",
     human_input_mode="NEVER",
     max_consecutive_auto_reply=5,

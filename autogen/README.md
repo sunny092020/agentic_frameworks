@@ -23,8 +23,10 @@ AutoGen is a framework that enables the development of LLM applications via mult
    ```
 3. Edit the `.env` file to add your OpenAI API key
    ```
-   OPENAI_API_KEY=your_actual_api_key_here
+   OPENAI_API_KEY=sk-your_actual_api_key_here
    ```
+   
+   > **Important**: The OpenAI API key must start with `sk-` followed by the rest of your key. Using an incorrect format will result in a warning and the examples won't work properly.
 
 ## Running the Examples
 
@@ -73,7 +75,8 @@ In the code generation example, you can set `use_docker: True` in the `code_exec
 
 ## Troubleshooting
 
-- If you encounter errors related to the OpenAI API, ensure your API key is correctly set in the `.env` file.
+- If you encounter errors related to the OpenAI API, ensure your API key is correctly set in the `.env` file and includes the `sk-` prefix.
+- If you're seeing warnings about `flaml.automl`, make sure your requirements.txt includes `flaml[automl]` and rebuild the Docker image.
 - If you're having issues with Docker, ensure Docker and Docker Compose are properly installed and the Docker daemon is running.
 
 ## Resources

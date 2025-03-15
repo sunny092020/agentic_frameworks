@@ -1,6 +1,8 @@
 import os
-import autogen
 from dotenv import load_dotenv
+from autogen.agentchat.assistant_agent import AssistantAgent
+from autogen.agentchat.user_proxy_agent import UserProxyAgent
+from autogen.agentchat.groupchat import GroupChat, GroupChatManager
 
 # Load environment variables from .env file if present
 load_dotenv()
@@ -20,50 +22,42 @@ config_list = [
 
 # Create assistant agent configuration
 assistant_config = {
-    "seed": 42,  # for reproducibility
     "config_list": config_list,
     "temperature": 0.7,
 }
 
-# Create user proxy agent configuration
-user_proxy_config = {
-    "seed": 42,  # for reproducibility
-    "human_input_mode": "NEVER",  # No human input for non-interactive examples
-}
-
 # Create the agents
-assistant = autogen.AssistantAgent(
+assistant = AssistantAgent(
     name="Assistant",
     llm_config=assistant_config,
     system_message="You are a helpful AI assistant."
 )
 
-data_scientist = autogen.AssistantAgent(
+data_scientist = AssistantAgent(
     name="DataScientist",
     llm_config=assistant_config,
     system_message="You are a data scientist. You analyze data and create models."
 )
 
-programmer = autogen.AssistantAgent(
+programmer = AssistantAgent(
     name="Programmer",
     llm_config=assistant_config,
     system_message="You are a Python programmer. You can translate concepts into efficient code."
 )
 
-user_proxy = autogen.UserProxyAgent(
+user_proxy = UserProxyAgent(
     name="User",
-    human_input_mode="NEVER",
-    **user_proxy_config
+    human_input_mode="NEVER",  # No human input for non-interactive examples
 )
 
 # Define a function to initialize a group chat
 def start_group_chat():
-    groupchat = autogen.GroupChat(
+    groupchat = GroupChat(
         agents=[user_proxy, assistant, data_scientist, programmer],
         messages=[],
         max_round=10
     )
-    manager = autogen.GroupChatManager(groupchat=groupchat)
+    manager = GroupChatManager(groupchat=groupchat)
     
     # Start the conversation
     user_proxy.initiate_chat(
