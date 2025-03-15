@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  autogen:
+    build: .
+    container_name: autogen-example
+    volumes:
+      - ./app:/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    command: python /app/multi_agent_conversation.py
+    ports:
+      - "8000:8000"  # In case we want to expose any web services
+    restart: unless-stopped 
