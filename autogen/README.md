@@ -9,6 +9,7 @@ AutoGen is a framework that enables the development of LLM applications via mult
 1. A multi-agent conversation demo for data analysis
 2. A code generation demo that can write and execute Python code
 3. A travel planning assistant that demonstrates non-coding use cases
+4. A romantic conversation simulation between two characters
 
 ## Prerequisites
 
@@ -59,6 +60,16 @@ docker-compose up travel-planner
 
 This example allows you to interact with a group of agents that help plan a vacation, including a travel coordinator, destination expert, budget advisor, and local cuisine expert.
 
+### Romantic Conversation Simulation
+
+To run the romantic conversation example between two characters:
+
+```bash
+docker-compose up romantic-chat
+```
+
+This example simulates a flirtatious conversation between two characters (Emma and James) who just met at a literary event. It demonstrates how AutoGen can be used for creative content generation and character roleplay. The conversation is guided by a moderator agent, and you can observe or participate as desired.
+
 ## Project Structure
 
 ```
@@ -66,7 +77,8 @@ autogen/
 ├── app/
 │   ├── multi_agent_conversation.py     # Data analysis example with multiple agents
 │   ├── code_generation_example.py      # Example that generates and executes code
-│   └── travel_planning_assistant.py    # Non-coding example for travel planning
+│   ├── travel_planning_assistant.py    # Non-coding example for travel planning
+│   └── romantic_conversation.py        # Simulated conversation between two characters
 ├── docker-compose.yml                  # Docker Compose configuration
 ├── Dockerfile                          # Docker image definition
 ├── requirements.txt                    # Python dependencies
