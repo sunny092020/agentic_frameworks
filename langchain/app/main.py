@@ -4,6 +4,8 @@ from fastapi import FastAPI, HTTPException, File, UploadFile
 from pydantic import BaseModel
 import tempfile
 from typing import List, Optional
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, FileResponse
 
 # LangChain core imports
 from langchain_core.prompts import PromptTemplate
@@ -28,6 +30,9 @@ if not os.getenv("OPENAI_API_KEY"):
     print("WARNING: OPENAI_API_KEY environment variable not set.")
 
 app = FastAPI(title="LangChain API Example")
+
+# Mount static files directory
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 class QueryRequest(BaseModel):
     query: str
@@ -203,6 +208,10 @@ async def run_agent(request: QueryRequest):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error running agent: {str(e)}")
+
+@app.get("/ui", response_class=HTMLResponse)
+async def get_ui():
+    return FileResponse("static/index.html")
 
 if __name__ == "__main__":
     import uvicorn

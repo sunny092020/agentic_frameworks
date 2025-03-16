@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LangChain Demo</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>LangChain Demo</h1>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="simple-chat">Simple Chat</button>
+            <button class="tab-btn" data-tab="memory-chat">Chat with Memory</button>
+            <button class="tab-btn" data-tab="document-qa">Document QA</button>
+            <button class="tab-btn" data-tab="agent">Agent</button>
+        </div>
+        
+        <div class="tab-content active" id="simple-chat">
+            <h2>Simple Chat</h2>
+            <textarea id="simple-prompt" placeholder="Enter your question here..."></textarea>
+            <button id="simple-send">Send</button>
+            <div class="response" id="simple-response"></div>
+        </div>
+        
+        <div class="tab-content" id="memory-chat">
+            <h2>Chat with Memory</h2>
+            <div class="chat-container" id="memory-messages">
+                <div class="system-message">Start a conversation! The assistant will remember previous messages.</div>
+            </div>
+            <div class="input-container">
+                <textarea id="memory-prompt" placeholder="Enter your message here..."></textarea>
+                <button id="memory-send">Send</button>
+            </div>
+            <button id="clear-memory" class="clear-btn">Clear Memory</button>
+        </div>
+        
+        <div class="tab-content" id="document-qa">
+            <h2>Document QA</h2>
+            <div class="upload-container">
+                <input type="file" id="document-file">
+                <button id="upload-btn">Upload Document</button>
+            </div>
+            <div id="document-status"></div>
+            <textarea id="document-query" placeholder="Ask a question about the uploaded document..."></textarea>
+            <button id="document-ask" disabled>Ask Question</button>
+            <div class="response" id="document-response"></div>
+        </div>
+        
+        <div class="tab-content" id="agent">
+            <h2>LangChain Agent</h2>
+            <textarea id="agent-prompt" placeholder="Enter a complex task for the agent to solve..."></textarea>
+            <button id="agent-send">Execute</button>
+            <div class="response" id="agent-response"></div>
+        </div>
+    </div>
+</body>
+</html> 
