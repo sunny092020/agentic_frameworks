@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, Form, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
 import os
 import autogen
+import subprocess
+import sys
 
 app = FastAPI(title="AutoGen Web UI")
 
@@ -40,6 +42,29 @@ async def run_conversation(request: Request, user_message: str = Form(...)):
         "conversation.html", 
         {"request": request, "conversation": conversation_history, "user_message": user_message}
     )
+
+@app.get("/examples", response_class=HTMLResponse)
+async def examples_page(request: Request):
+    """Render the examples page."""
+    examples = [
+        {"name": "Code Generation Example", "script": "code_generation_example.py", "description": "Demonstrates code generation capabilities"},
+        {"name": "Multi-Agent Conversation", "script": "multi_agent_conversation.py", "description": "Shows conversation between multiple agents"},
+        {"name": "Research Assistant", "script": "research_assistant.py", "description": "Demonstrates research assistant functionality"}
+    ]
+    return templates.TemplateResponse("examples.html", {"request": request, "examples": examples})
+
+@app.post("/run-example")
+async def run_example(script: str = Form(...)):
+    """Run the selected example script."""
+    # Get the absolute path to the script
+    script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), script)
+    
+    # Run the script as a subprocess
+    print(f"\n\n=== Running {script} ===\n")
+    subprocess.Popen([sys.executable, script_path])
+    
+    # Redirect back to examples page
+    return RedirectResponse(url="/examples", status_code=303)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True) 

@@ -1,39 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoGen Web UI</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>AutoGen Web UI</h1>
-            <p>Interact with AutoGen agents through this web interface</p>
-        </header>
-        
-        <main>
-            <section class="input-section">
-                <h2>Start a conversation</h2>
-                <form action="/run_conversation" method="post">
-                    <div class="form-group">
-                        <label for="user_message">Enter your message:</label>
-                        <textarea 
-                            name="user_message" 
-                            id="user_message" 
-                            rows="5" 
-                            placeholder="Type your message here to start a conversation with AutoGen agents..."
-                            required></textarea>
-                    </div>
-                    <button type="submit" class="btn primary-btn">Submit</button>
-                </form>
-            </section>
-        </main>
-        
-        <footer>
-            <p>Powered by AutoGen and FastAPI</p>
-        </footer>
+{% extends "base.html" %}
+
+{% block title %}AutoGen - Home{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to AutoGen</h1>
+        <p class="lead">A framework for multi-agent systems with LLMs.</p>
+        <hr class="my-4">
+        <p>Explore the capabilities of AutoGen through our examples or create your own agents.</p>
+        <a class="btn btn-primary btn-lg" href="/examples" role="button">View Examples</a>
     </div>
-</body>
-</html> 
+</div>
+{% endblock %} 
