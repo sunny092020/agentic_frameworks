@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation - AutoGen Web UI</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AutoGen Conversation</h1>
+            <a href="/" class="btn secondary-btn">New Conversation</a>
+        </header>
+        
+        <main>
+            <section class="conversation-section">
+                <h2>Conversation History</h2>
+                <div class="conversation-container">
+                    {% for message in conversation %}
+                        <div class="message {{ message.role }}">
+                            <div class="message-header">
+                                <strong>{{ message.role|title }}</strong>
+                            </div>
+                            <div class="message-content">
+                                {{ message.content | replace('\n', '<br>') | safe }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <h2>Continue Conversation</h2>
+                <form action="/run_conversation" method="post">
+                    <div class="form-group">
+                        <label for="user_message">Your message:</label>
+                        <textarea 
+                            name="user_message" 
+                            id="user_message" 
+                            rows="4" 
+                            placeholder="Continue the conversation..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Send</button>
+                </form>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Powered by AutoGen and FastAPI</p>
+        </footer>
+    </div>
+</body>
+</html> 

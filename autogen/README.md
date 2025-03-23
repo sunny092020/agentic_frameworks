@@ -119,4 +119,32 @@ In the code generation example, you can set `use_docker: True` in the `code_exec
 
 - [AutoGen GitHub Repository](https://github.com/microsoft/autogen)
 - [AutoGen Documentation](https://microsoft.github.io/autogen/)
-- [Docker Compose Documentation](https://docs.docker.com/compose/) 
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
+
+## Web UI
+
+This project includes a web-based user interface built with FastAPI that allows you to interact with AutoGen agents through your browser.
+
+### Features
+
+- Simple, intuitive web interface
+- Submit messages to AutoGen agents
+- View conversation history
+- Continue conversations with follow-up messages
+
+### Usage
+
+1. Start the application using Docker:
+   ```
+   docker-compose up
+   ```
+
+2. Open your browser and navigate to [http://localhost:8000](http://localhost:8000)
+
+3. Type your message in the form and click "Submit" to start a conversation with the AutoGen agents
+
+4. View the responses and continue the conversation as needed
+
+### Customization
+
+You can customize the AutoGen agent configuration in `app/main.py`. The web UI is built with FastAPI, Jinja2 templates, and CSS. You can modify the templates in the `app/templates` directory and the styles in `app/static/css/styles.css`. 
