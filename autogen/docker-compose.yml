@@ -8,58 +8,10 @@ services:
       - ./app:/app
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-    command: python /app/multi_agent_conversation.py
+      - NEWS_API_KEY=${NEWS_API_KEY}
+    command: tail -f /dev/null  # Keep container running without executing example
     ports:
       - "8000:8000"  # In case we want to expose any web services
     tty: true        # Allocate a pseudo-TTY
     stdin_open: true # Keep stdin open
     restart: unless-stopped
-    
-  travel-planner:
-    build: .
-    container_name: autogen-travel-planner
-    volumes:
-      - ./app:/app
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    command: python /app/travel_planning_assistant.py
-    tty: true        # Allocate a pseudo-TTY
-    stdin_open: true # Keep stdin open
-    restart: "no"
-    
-  romantic-chat:
-    build: .
-    container_name: autogen-romantic-chat
-    volumes:
-      - ./app:/app
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    command: python /app/romantic_conversation.py
-    tty: true        # Allocate a pseudo-TTY
-    stdin_open: true # Keep stdin open
-    restart: "no"
-
-  simple-flirt:
-    build: .
-    container_name: autogen-simple-flirt
-    volumes:
-      - ./app:/app
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    command: python /app/simple_flirt.py
-    tty: true        # Allocate a pseudo-TTY
-    stdin_open: true # Keep stdin open
-    restart: "no"
-
-  research-assistant:
-    build: .
-    container_name: autogen-research
-    volumes:
-      - ./app:/app
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - NEWS_API_KEY=${NEWS_API_KEY}
-    command: python /app/research_assistant.py
-    tty: true
-    stdin_open: true
-    restart: "no" 
