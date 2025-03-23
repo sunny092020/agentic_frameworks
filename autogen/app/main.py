@@ -49,7 +49,9 @@ async def examples_page(request: Request):
     examples = [
         {"name": "Code Generation Example", "script": "code_generation_example.py", "description": "Demonstrates code generation capabilities"},
         {"name": "Multi-Agent Conversation", "script": "multi_agent_conversation.py", "description": "Shows conversation between multiple agents"},
-        {"name": "Research Assistant", "script": "research_assistant.py", "description": "Demonstrates research assistant functionality"}
+        {"name": "Research Assistant", "script": "research_assistant.py", "description": "Demonstrates research assistant functionality"},
+        {"name": "Romantic Conversation", "script": "romantic_conversation.py", "description": "Example of agents engaging in romantic dialogue"},
+        {"name": "Simple Flirt", "script": "simple_flirt.py", "description": "Demonstrates flirtatious conversation between agents"}
     ]
     return templates.TemplateResponse("examples.html", {"request": request, "examples": examples})
 
