@@ -53,11 +53,41 @@ class LLMConfig:
         return llm_config
     
     @staticmethod
+    def get_deepseek_config():
+        """Get DeepSeek API configuration."""
+        api_key = os.environ.get("DEEPSEEK_API_KEY")
+        if not api_key:
+            raise ValueError("DEEPSEEK_API_KEY environment variable is not set")
+            
+        base_url = os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
+        model = os.environ.get("DEEPSEEK_MODEL", "deepseek-reasoner")
+        
+        print(f"Connecting to DeepSeek API at: {base_url}")
+        
+        config_list = [
+            {
+                "model": model,
+                "base_url": base_url,
+                "api_key": api_key,
+                "price": [0.0005, 0.0015]  # Approximate pricing [prompt_price_per_1k, completion_price_per_1k]
+            }
+        ]
+        
+        llm_config = {
+            "config_list": config_list,
+            "temperature": 0.7,
+        }
+        
+        return llm_config
+    
+    @staticmethod
     def get_config(provider="openai"):
         """Get LLM configuration based on provider."""
         if provider == "openai":
             return LLMConfig.get_openai_config()
         elif provider == "lm_studio":
             return LLMConfig.get_lm_studio_config()
+        elif provider == "deepseek":
+            return LLMConfig.get_deepseek_config()
         else:
             raise ValueError(f"Unsupported provider: {provider}") 

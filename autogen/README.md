@@ -16,6 +16,7 @@ AutoGen is a framework that enables the development of LLM applications via mult
 
 - Docker and Docker Compose installed
 - An OpenAI API key
+- (Optional) A DeepSeek API key for using DeepSeek R1 model
 
 ## Setup
 
@@ -24,12 +25,25 @@ AutoGen is a framework that enables the development of LLM applications via mult
    ```
    cp .env.example .env
    ```
-3. Edit the `.env` file to add your OpenAI API key
+3. Edit the `.env` file to add your API keys:
    ```
    OPENAI_API_KEY=sk-your_actual_api_key_here
+   
+   # For DeepSeek R1 (optional)
+   DEEPSEEK_API_KEY=your_deepseek_api_key_here
    ```
    
    > **Important**: The OpenAI API key must start with `sk-` followed by the rest of your key. Using an incorrect format will result in a warning and the examples won't work properly.
+
+## LLM Provider Options
+
+This project supports multiple LLM providers:
+
+1. **OpenAI** - Uses OpenAI's models like GPT-4 through their API
+2. **LM Studio** - Connect to a local LM Studio instance for inference
+3. **DeepSeek** - Uses DeepSeek's R1 model through their API
+
+You can select the provider in the web UI or specify it when running an example.
 
 ## Running the Examples
 
@@ -131,6 +145,7 @@ This project includes a web-based user interface built with FastAPI that allows 
 - Submit messages to AutoGen agents
 - View conversation history
 - Continue conversations with follow-up messages
+- Switch between different LLM providers (OpenAI, LM Studio, DeepSeek R1)
 
 ### Usage
 
@@ -144,6 +159,8 @@ This project includes a web-based user interface built with FastAPI that allows 
 3. Type your message in the form and click "Submit" to start a conversation with the AutoGen agents
 
 4. View the responses and continue the conversation as needed
+
+5. Select your preferred LLM provider (OpenAI, LM Studio, or DeepSeek R1) in the examples page
 
 ### Customization
 
