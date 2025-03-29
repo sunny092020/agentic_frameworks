@@ -1,0 +1,45 @@
+#for Vagrant
+vagrant*/
+
+#compiled js/css
+var/www/html/_cached_resources/
+var/www/html/_cached_resources_compressed/
+
+#for python
+*.pyc
+
+#for pytest
+**/.cache/
+
+#node.js
+node_modules/
+
+#for mac
+.DS_Store
+
+#for IntelliJ
+.idea/*
+*.iml
+!/.idea/pylint.xml
+!/.idea/mypy.xml
+
+#for Eclipse
+bin/
+.project
+.classpath
+.settings/
+
+#for composer
+vendor/
+
+#for update
+update_chikyu_param.sh
+
+#for Atom
+.ftpconfig
+
+#for composer
+var/www/html/lib/composer.lock
+
+#for logs
+var/www/log/
