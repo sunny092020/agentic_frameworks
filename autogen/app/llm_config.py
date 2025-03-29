@@ -16,7 +16,7 @@ class LLMConfig:
         
         config_list = [
             {
-                "model": "gpt-4",
+                "model": "gpt-4o-mini",
                 "api_key": api_key,
             }
         ]
