@@ -40,7 +40,8 @@ class LLMConfig:
             {
                 "model": model,
                 "base_url": base_url,
-                "api_key": "not-needed"  # LM Studio doesn't require an API key
+                "api_key": "not-needed",  # LM Studio doesn't require an API key
+                "price": [0.0, 0.0]  # Add pricing information [prompt_price_per_1k, completion_price_per_1k]
             }
         ]
         
