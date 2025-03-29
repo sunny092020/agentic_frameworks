@@ -31,8 +31,10 @@ class LLMConfig:
     @staticmethod
     def get_lm_studio_config():
         """Get LM Studio configuration."""
-        base_url = os.environ.get("LM_STUDIO_BASE_URL", "http://localhost:1234/v1")
+        base_url = os.environ.get("LM_STUDIO_BASE_URL", "http://host.docker.internal:1234/v1")
         model = os.environ.get("LM_STUDIO_MODEL", "default_model")
+        
+        print(f"Connecting to LM Studio at: {base_url}")
         
         config_list = [
             {

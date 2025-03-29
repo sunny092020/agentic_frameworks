@@ -5,9 +5,13 @@ services:
     build: .
     volumes:
       - ./app:/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - NEWS_API_KEY=${NEWS_API_KEY}
+      - LLM_PROVIDER=lm_studio
+      - LM_STUDIO_BASE_URL=http://host.docker.internal:1234/v1
     ports:
       - "8000:8000"
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
