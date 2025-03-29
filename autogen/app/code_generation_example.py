@@ -2,14 +2,17 @@ import os
 from dotenv import load_dotenv
 from autogen.agentchat.assistant_agent import AssistantAgent
 from autogen.agentchat.user_proxy_agent import UserProxyAgent
+from llm_config import LLMConfig
 
 # Load environment variables from .env file if present
 load_dotenv()
 
-# Get OpenAI API key from environment
-api_key = os.environ.get("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("OPENAI_API_KEY environment variable is not set")
+# Get the LLM provider from environment or use default
+llm_provider = os.environ.get("LLM_PROVIDER", "openai")
+print(f"Using LLM provider: {llm_provider}")
+
+# Get the LLM configuration based on provider
+llm_config = LLMConfig.get_config(llm_provider)
 
 # Create the temperature data file in the workspace directory
 def create_temperature_data(workspace_dir):
@@ -45,19 +48,6 @@ def create_temperature_data(workspace_dir):
     
     print(f"Created temperature dataset at: {data_path}")
     return data_path
-
-# Configure OpenAI
-config_list = [
-    {
-        "model": "gpt-4",
-        "api_key": api_key,
-    }
-]
-
-llm_config = {
-    "config_list": config_list,
-    "temperature": 0.7,
-}
 
 # Create an AssistantAgent instance named "assistant"
 assistant = AssistantAgent(

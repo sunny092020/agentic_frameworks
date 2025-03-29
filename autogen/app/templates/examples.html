@@ -7,6 +7,34 @@
     <h1 class="mb-4">AutoGen Examples</h1>
     <p class="lead">Select an example to run. The output will be displayed in the terminal.</p>
     
+    <div class="mb-4">
+        <div class="card">
+            <div class="card-header">
+                <strong>LLM Provider Selection</strong>
+            </div>
+            <div class="card-body">
+                <form action="/set-provider" method="post" class="d-flex gap-3 align-items-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="provider" id="provider-openai" value="openai" {% if current_provider == "openai" %}checked{% endif %}>
+                        <label class="form-check-label" for="provider-openai">
+                            OpenAI
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="provider" id="provider-lm-studio" value="lm_studio" {% if current_provider == "lm_studio" %}checked{% endif %}>
+                        <label class="form-check-label" for="provider-lm-studio">
+                            LM Studio (Local)
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Update Provider</button>
+                </form>
+                <div class="mt-2">
+                    <small class="text-muted">Current provider: <strong>{{ current_provider }}</strong></small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="row mt-4">
         {% for example in examples %}
         <div class="col-md-4 mb-4">
@@ -16,6 +44,7 @@
                     <p class="card-text">{{ example.description }}</p>
                     <form action="/run-example" method="post">
                         <input type="hidden" name="script" value="{{ example.script }}">
+                        <input type="hidden" name="provider" value="{{ current_provider }}">
                         <button type="submit" class="btn btn-primary">Run Example</button>
                     </form>
                 </div>

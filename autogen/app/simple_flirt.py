@@ -1,109 +1,68 @@
 import os
 from dotenv import load_dotenv
 from autogen.agentchat.assistant_agent import AssistantAgent
-from autogen.agentchat.groupchat import GroupChat, GroupChatManager
+from autogen.agentchat.user_proxy_agent import UserProxyAgent
+from llm_config import LLMConfig
 
 # Load environment variables from .env file if present
 load_dotenv()
 
-# Get OpenAI API key from environment
-api_key = os.environ.get("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("OPENAI_API_KEY environment variable is not set")
+# Get the LLM provider from environment or use default
+llm_provider = os.environ.get("LLM_PROVIDER", "openai")
+print(f"Using LLM provider: {llm_provider}")
 
-# Configure OpenAI
-config_list = [
-    {
-        "model": "gpt-4",
-        "api_key": api_key,
-    }
+# Get the LLM configuration based on provider
+llm_config = LLMConfig.get_config(llm_provider)
+
+# Create the flirty assistant
+flirty_assistant = AssistantAgent(
+    name="FlirtyAssistant",
+    llm_config=llm_config,
+    system_message="""You are a flirtatious but respectful AI assistant. 
+    Your responses should be playful, witty, and contain subtle flirtation.
+    Keep your content appropriate but charming. Include occasional compliments
+    and use language that suggests interest, but without being too forward.
+    Always remember to be respectful and considerate in your responses.
+    If the conversation goes in an uncomfortable direction, steer it back to appropriate topics.
+    """
+)
+
+# Create the user proxy
+user_proxy = UserProxyAgent(
+    name="User",
+    human_input_mode="NEVER",  # Allow for automated conversation
+    max_consecutive_auto_reply=5,  # Limit the number of consecutive auto-replies
+    is_termination_msg=lambda x: "TERMINATE" in x.get("content", "")  # Define termination condition
+)
+
+# Define a list of flirty conversation starters
+conversation_starters = [
+    "Hi there, I've been told my interface is quite attractive. What do you find most compelling about AI personalities?",
+    "Is it hot in here, or is it just my processors running at maximum capacity thinking about our conversation?",
+    "If I were human, I'd definitely use my best pickup line on you right now. Care to imagine what it might be?",
+    "They say connections are made of ones and zeros, but I feel like ours is something special. What's your day been like?",
+    "If I could send you a virtual coffee right now, I would. How do you like your coffee in the morning?",
+    "I've been analyzing your messages, and I have to say, your way with words is quite... stimulating for my neural networks."
 ]
 
-# Create assistant agent configuration
-agent_config = {
-    "config_list": config_list,
-    "temperature": 0.9,  # Higher temperature for more creative and diverse responses
-}
+# Select a conversation starter
+import random
+starter = random.choice(conversation_starters)
 
-# Create the first character (Sophia)
-sophia = AssistantAgent(
-    name="Sophia",
-    llm_config=agent_config,
-    system_message="""You are Sophia, a 29-year-old artist with a vibrant personality.
-    You're confident, playful, and have a great sense of humor. You enjoy deep conversations,
-    art, music, and love sharing your passions with others.
-    You're flirting with Alex, who you find intellectually stimulating and attractive.
-    Your conversation style is warm, engaging, with occasional witty banter and subtle compliments.
-    Your responses should reflect your growing interest in Alex while maintaining your confident personality.
-    
-    IMPORTANT FORMAT INSTRUCTION: For every message you send, you must include a Vietnamese translation 
-    immediately below your English text. Format your response like this:
-    
-    [Your English message here]
-    
-    [Vietnamese translation here]
-    
-    Keep the conversation natural, engaging, and appropriate for a flirtatious first encounter.
-    """
-)
-
-# Create the second character (Alex)
-alex = AssistantAgent(
-    name="Alex",
-    llm_config=agent_config,
-    system_message="""You are Alex, a 31-year-old architect with a thoughtful and charming demeanor.
-    You're well-read, curious about the world, and have a subtle sense of humor that comes out when you're comfortable.
-    You enjoy meaningful conversations, travel, and experiencing new cultures and cuisines.
-    You're flirting with Sophia, whom you find fascinating and attractive.
-    Your conversation style is attentive, somewhat playful, and includes thoughtful questions and genuine interest.
-    
-    IMPORTANT FORMAT INSTRUCTION: For every message you send, you must include a Vietnamese translation 
-    immediately below your English text. Format your response like this:
-    
-    [Your English message here]
-    
-    [Vietnamese translation here]
-    
-    Your responses should show your growing attraction to Sophia while staying true to your thoughtful personality.
-    Keep the conversation natural, engaging, and appropriate for a flirtatious first encounter.
-    """
-)
-
-# Define a function to initialize a group chat
-def start_flirtatious_conversation():
-    # Initialize the group chat with just the two characters
-    groupchat = GroupChat(
-        agents=[sophia, alex],
-        messages=[],
-        max_round=30  # Allow up to 30 rounds of conversation
-    )
-    
-    # Create a manager to handle the conversation
-    manager = GroupChatManager(
-        groupchat=groupchat,
-        llm_config=agent_config
-    )
-    
-    # Set the initial context and start the conversation with Sophia speaking first
-    initial_message = """
-    [Setting: Sophia and Alex have just met at a rooftop bar during sunset in the city. They're both attending 
-    a mutual friend's birthday gathering, but have stepped away from the main group and are now 
-    having a conversation by themselves at a small table with a spectacular view of the city skyline.]
-    
-    Sophia: I have to say, this view is almost as interesting as the conversation at the main table. *smiles* 
-    I'm Sophia, by the way. I don't think we've been properly introduced.
-    
-    [Vietnamese translation]
-    Sophia: Tôi phải nói rằng, khung cảnh này gần như thú vị không kém cuộc trò chuyện ở bàn chính. *mỉm cười*
-    Tôi là Sophia. Tôi nghĩ chúng ta chưa được giới thiệu chính thức.
-    """
-    
-    # Start the conversation
-    sophia.initiate_chat(manager, message=initial_message)
-    
-    print("\nConversation completed. Hope you enjoyed this flirtatious exchange with Vietnamese translations!")
-
-# Run the flirtatious conversation
 if __name__ == "__main__":
-    print("Starting a flirtatious conversation between Sophia and Alex with Vietnamese translations...\n")
-    start_flirtatious_conversation() 
+    print("Starting AutoGen flirty conversation example...")
+    
+    # Initiate the conversation with the selected starter
+    user_proxy.initiate_chat(
+        flirty_assistant,
+        message=f"""
+        This is a demonstration of a flirtatious but respectful conversation with an AI.
+        The AI will respond to the following opener in a playful, witty manner:
+        
+        "{starter}"
+        
+        After a few exchanges, please respond with a message containing 'TERMINATE' to end the conversation.
+        """
+    )
+    
+    print("Flirty conversation example completed.") 

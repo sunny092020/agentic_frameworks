@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Form, Depends
+from fastapi import FastAPI, Request, Form, Depends, Cookie
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -7,6 +7,7 @@ import os
 import autogen
 import subprocess
 import sys
+from typing import Optional
 
 app = FastAPI(title="AutoGen Web UI")
 
@@ -15,6 +16,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Setup Jinja2 templates
 templates = Jinja2Templates(directory="templates")
+
+# Default model provider
+DEFAULT_PROVIDER = "openai"
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -44,8 +48,12 @@ async def run_conversation(request: Request, user_message: str = Form(...)):
     )
 
 @app.get("/examples", response_class=HTMLResponse)
-async def examples_page(request: Request):
+async def examples_page(request: Request, llm_provider: Optional[str] = Cookie(None)):
     """Render the examples page."""
+    # Set default provider if not in cookie
+    if not llm_provider:
+        llm_provider = DEFAULT_PROVIDER
+        
     examples = [
         {"name": "Code Generation Example", "script": "code_generation_example.py", "description": "Demonstrates code generation capabilities"},
         {"name": "Multi-Agent Conversation", "script": "multi_agent_conversation.py", "description": "Shows conversation between multiple agents"},
@@ -53,17 +61,30 @@ async def examples_page(request: Request):
         {"name": "Romantic Conversation", "script": "romantic_conversation.py", "description": "Example of agents engaging in romantic dialogue"},
         {"name": "Simple Flirt", "script": "simple_flirt.py", "description": "Demonstrates flirtatious conversation between agents"}
     ]
-    return templates.TemplateResponse("examples.html", {"request": request, "examples": examples})
+    return templates.TemplateResponse("examples.html", {
+        "request": request, 
+        "examples": examples,
+        "current_provider": llm_provider
+    })
+
+@app.post("/set-provider")
+async def set_provider(provider: str = Form(...)):
+    """Set the LLM provider."""
+    response = RedirectResponse(url="/examples", status_code=303)
+    response.set_cookie(key="llm_provider", value=provider)
+    return response
 
 @app.post("/run-example")
-async def run_example(script: str = Form(...)):
+async def run_example(script: str = Form(...), provider: str = Form(...)):
     """Run the selected example script."""
     # Get the absolute path to the script
     script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), script)
     
-    # Run the script as a subprocess
-    print(f"\n\n=== Running {script} ===\n")
-    subprocess.Popen([sys.executable, script_path])
+    # Run the script as a subprocess with the provider as an environment variable
+    print(f"\n\n=== Running {script} with provider: {provider} ===\n")
+    env = os.environ.copy()
+    env["LLM_PROVIDER"] = provider
+    subprocess.Popen([sys.executable, script_path], env=env)
     
     # Redirect back to examples page
     return RedirectResponse(url="/examples", status_code=303)

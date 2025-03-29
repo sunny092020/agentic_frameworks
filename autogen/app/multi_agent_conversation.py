@@ -3,14 +3,17 @@ from dotenv import load_dotenv
 from autogen.agentchat.assistant_agent import AssistantAgent
 from autogen.agentchat.user_proxy_agent import UserProxyAgent
 from autogen.agentchat.groupchat import GroupChat, GroupChatManager
+from llm_config import LLMConfig
 
 # Load environment variables from .env file if present
 load_dotenv()
 
-# Get OpenAI API key from environment
-api_key = os.environ.get("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("OPENAI_API_KEY environment variable is not set")
+# Get the LLM provider from environment or use default
+llm_provider = os.environ.get("LLM_PROVIDER", "openai")
+print(f"Using LLM provider: {llm_provider}")
+
+# Get the LLM configuration based on provider
+llm_config = LLMConfig.get_config(llm_provider)
 
 # Create the temperature data file in the current working directory
 def create_temperature_data():
@@ -45,36 +48,22 @@ def create_temperature_data():
     print(f"Created temperature dataset at: {data_path}")
     return data_path
 
-# Configure OpenAI
-config_list = [
-    {
-        "model": "gpt-4",
-        "api_key": api_key,
-    }
-]
-
-# Create assistant agent configuration
-assistant_config = {
-    "config_list": config_list,
-    "temperature": 0.7,
-}
-
 # Create the agents
 assistant = AssistantAgent(
     name="Assistant",
-    llm_config=assistant_config,
+    llm_config=llm_config,
     system_message="You are a helpful AI assistant."
 )
 
 data_scientist = AssistantAgent(
     name="DataScientist",
-    llm_config=assistant_config,
+    llm_config=llm_config,
     system_message="You are a data scientist. You analyze data and create models."
 )
 
 programmer = AssistantAgent(
     name="Programmer",
-    llm_config=assistant_config,
+    llm_config=llm_config,
     system_message="""You are a Python programmer. You can translate concepts into efficient code. 
     Always check that your code runs properly and all variables are defined before they are used.
     Use a sequential approach where you first load data, then process it, and finally visualize it.
@@ -102,7 +91,7 @@ def start_group_chat():
     )
     manager = GroupChatManager(
         groupchat=groupchat,
-        llm_config=assistant_config  # Provide the LLM config to the manager
+        llm_config=llm_config  # Provide the LLM config to the manager
     )
     
     # Start the conversation
